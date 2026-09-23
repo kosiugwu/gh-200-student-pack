@@ -1,0 +1,31 @@
+# a workflow to check
+# this answere when - it should be on and pull to the main branch
+name: PR gate 
+on: 
+  pull_request:
+    branches: main
+  workflow_dispatch:
+  # this answers where  ubuntu or windows. notice the use of matrix to define certain jobs
+  # and calling it as an expression
+jobs:
+  check:
+    strategy: # How many/fail-fast
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{matrix.os}}
+# Steps. this lists the steps  and what it uses
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+      - uses: actions/setup-python@v7
+        with: 
+         python-version: '3.12'
+         
+      - name: Run the check
+        run: python labs/capstone/check.py       
+        
+        
+        
+      
+      
+      
